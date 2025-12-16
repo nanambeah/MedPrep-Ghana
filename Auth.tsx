@@ -20,45 +20,63 @@ export default function Auth() {
   const [name, setName] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    try {
-      if (email.includes("admin")) {
-        await login(email, "admin");
-        toast({ title: "Welcome back, Admin", description: "You have full access." });
-      } else {
-        await login(email, "user");
-        toast({ title: "Welcome back!", description: "Check your email for login link if this was a real app, or you are logged in." });
-      }
-    } catch (error: any) {
-      toast({ 
-        title: "Login Failed", 
-        description: error.message || "An error occurred",
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  e.preventDefault();
+  setIsLoading(true);
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    try {
-      await register(name, email);
-      toast({ title: "Account created!", description: "Please check your email to confirm." });
-    } catch (error: any) {
-       toast({ 
-        title: "Registration Failed", 
-        description: error.message || "An error occurred",
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  try {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) throw error;
+
+    toast({
+      title: "Welcome back!",
+      description: "You are now logged in.",
+    });
+
+    setLocation("/dashboard");
+  } catch (error: any) {
+    toast({
+      title: "Login failed",
+      description: error.message,
+      variant: "destructive",
+    });
+  } finally {
+    setIsLoading(false);
+  }
+};
+  
+const handleRegister = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsLoading(true);
+
+  try {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { name },
+      },
+    });
+
+    if (error) throw error;
+
+    toast({
+      title: "Account created!",
+      description: "Please check your email to confirm your account.",
+    });
+  } catch (error: any) {
+    toast({
+      title: "Registration failed",
+      description: error.message,
+      variant: "destructive",
+    });
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   // Check URL query param for default tab
   const params = new URLSearchParams(window.location.search);
