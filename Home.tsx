@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Check, Shield, Zap, BookOpen, TrendingUp, Users } from "lucide-react";
-import heroImage from "@assets/generated_images/african_medical_students_studying_in_modern_bright_environment.png";
 
 export default function Home() {
   return (
@@ -49,7 +48,7 @@ export default function Home() {
             <div className="mx-auto lg:mr-0 relative">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border aspect-[4/3] w-full max-w-[600px]">
                  <img 
-                   src={heroImage}
+                   src="/african_medical_students_studying_in_modern_bright_environment.png"
                    alt="Medical students studying" 
                    className="object-cover w-full h-full"
                  />
