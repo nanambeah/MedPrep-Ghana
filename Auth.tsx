@@ -1,5 +1,5 @@
+import { supabase } from "./supabaseClient";
 import { useState } from "react";
-import { useAuth } from "@/lib/auth";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,6 @@ import { Stethoscope, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Auth() {
-  const { login, register } = useAuth();
   const [_, setLocation] = useLocation();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
